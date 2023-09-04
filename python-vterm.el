@@ -64,11 +64,11 @@
   "A major mode for inferior Python REPL."
   :group 'python)
 
-(defvar-local python-vterm-repl-program "python"
+(defvar-local python-vterm-repl-program "ipython"
   "Name of the command for executing Python code.
 Maybe either a command in the path, like python
-or an absolute path name, like /usr/local/bin/python
-parameters may be used, like python -q")
+or an absolute path name, like /usr/local/bin/ipython
+parameters may be used, like ipython --no-banner")
 
 (defvar-local python-vterm-repl-script-buffer nil)
 
@@ -308,14 +308,19 @@ script buffer."
     (python-vterm-paste-string (python-vterm-ensure-newline (buffer-string)))))
 
 (defun python-vterm-send-include-buffer-file (&optional arg)
-  "Send a line to evaluate the buffer's file using include() to the Python REPL.
-With prefix ARG, use Revise.includet() instead."
+  "Send a line to evaluate the buffer's file using %run to the Python REPL.
+With prefix ARG, use %load instead."
   (interactive "P")
-  (let ((fmt (if arg "Revise.includet(\"%s\")\n" "include(\"%s\")\n")))
+  (let ((fmt (if arg "%%run \"%s\"" "%%load \"%s\"")))
     (if (and buffer-file-name
 	     (file-exists-p buffer-file-name)
 	     (not (buffer-modified-p)))
-	(python-vterm-paste-string (format fmt buffer-file-name))
+        (progn
+          (python-vterm-paste-string (format fmt buffer-file-name))
+          (if arg
+              (python-vterm-send-return-key)
+            (python-vterm-send-return-key)
+            (python-vterm-send-return-key)))
       (message "The buffer must be saved in a file to include."))))
 
 (defun python-vterm-send-cd-to-buffer-directory ()
@@ -323,7 +328,7 @@ With prefix ARG, use Revise.includet() instead."
   (interactive)
   (if buffer-file-name
       (let ((buffer-directory (file-name-directory buffer-file-name)))
-	(python-vterm-paste-string (format "cd(\"%s\")\n" buffer-directory))
+	(python-vterm-paste-string (format "%%cd \"%s\"\n" buffer-directory))
 	(with-current-buffer (python-vterm-fellow-repl-buffer)
 	  (setq default-directory buffer-directory)))
     (message "The buffer is not associated with a directory.")))
