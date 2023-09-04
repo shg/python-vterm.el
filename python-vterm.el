@@ -120,6 +120,7 @@ recreated."
 	    (vterm-shell python-vterm-repl-program))
 	(with-current-buffer buffer
 	  (python-vterm-repl-mode)
+          (sleep-for 0.1)
 	  (add-function :filter-args (process-filter vterm--process)
 			(python-vterm-repl-run-filter-functions-func ses-name)))
 	buffer))))
