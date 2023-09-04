@@ -184,11 +184,8 @@ Return a corresponding symbol or nil if not ready for input."
 				(char-to-string ?\n)))
 	   (prompt (car (last lines))))
       (pcase prompt
-	((rx bol "python> " eol) :python)
-	((rx bol "In [" (one-or-more (any "0-9")) "]: " eol) :python)
-	((rx bol "help?> " eol) :help)
-	((rx bol "(" (+? any) ") pkg> " eol) :pkg)
-	((rx bol "shell> " eol) :shell)))))
+	((rx bol ">>> " eol) :python)
+	((rx bol "In [" (one-or-more (any "0-9")) "]: " eol) :ipython)))))
 
 (defvar python-vterm-repl-copy-mode-map
   (let ((map (make-sparse-keymap)))
