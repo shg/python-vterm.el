@@ -4,10 +4,10 @@
 
 ;; Author: Shigeaki Nishina
 ;; Maintainer: Shigeaki Nishina
-;; Created: March 11, 2020
+;; Created: September 4, 2023
 ;; URL: https://github.com/shg/python-vterm.el
 ;; Package-Requires: ((emacs "25.1") (vterm "0.0.1"))
-;; Version: 0.24
+;; Version: 0.1
 ;; Keywords: languages, python
 
 ;; This file is not part of GNU Emacs.
