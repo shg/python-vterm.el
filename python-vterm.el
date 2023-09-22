@@ -345,7 +345,7 @@ With prefix ARG, use %load instead."
 (define-minor-mode python-vterm-mode
   "A minor mode for a Python script buffer that interacts with an inferior Python REPL."
   :init-value nil
-  :lighter " ⁂"
+  :lighter " ⛎"
   :keymap
   `((,(kbd "C-c C-z") . python-vterm-switch-to-repl-buffer)
     (,(kbd "C-<return>") . python-vterm-send-region-or-current-line)
