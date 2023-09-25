@@ -64,6 +64,8 @@
   "A major mode for inferior Python REPL."
   :group 'python)
 
+(defvar-local python-vterm-shell-program shell-file-name
+  "Name of the command for shell.")
 (defvar-local python-vterm-repl-program "ipython"
   "Name of the command for executing Python code.
 Maybe either a command in the path, like python
@@ -117,12 +119,14 @@ recreated."
       (if (get-buffer-process buffer) (delete-process buffer))
       (if buffer (kill-buffer buffer))
       (let ((buffer (generate-new-buffer (python-vterm-repl-buffer-name ses-name)))
-	    (vterm-shell python-vterm-repl-program))
+	    (vterm-shell python-vterm-shell-program))
 	(with-current-buffer buffer
 	  (python-vterm-repl-mode)
           (sleep-for 0.1)
 	  (add-function :filter-args (process-filter vterm--process)
-			(python-vterm-repl-run-filter-functions-func ses-name)))
+			(python-vterm-repl-run-filter-functions-func ses-name))
+          (vterm-send-string python-vterm-repl-program t)
+          (vterm-send-return))
 	buffer))))
 
 (defun python-vterm-repl (&optional arg)
