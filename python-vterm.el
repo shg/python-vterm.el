@@ -272,7 +272,10 @@ With prefix ARG, prompt for session name."
 If SESSION-NAME is given, the REPL with the session name, otherwise
 the main REPL, is used."
   (with-current-buffer (python-vterm-fellow-repl-buffer session-name)
-    (vterm-send-string string t)))
+    (cond ((string-match "\n\\'" string)
+           (vterm-send-string (substring string 0 -1) t)
+           (python-vterm-send-return-key))
+          (t (vterm-send-string string t)))))
 
 (defun python-vterm-send-current-line ()
   "Send the current line to the Python REPL, and move to the next line.
