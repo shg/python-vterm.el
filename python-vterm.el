@@ -319,17 +319,15 @@ script buffer."
   "Send a line to evaluate the buffer's file using %run to the Python REPL.
 With prefix ARG, use %load instead."
   (interactive "P")
-  (let ((fmt (if arg "%%run \"%s\"" "%%load \"%s\"")))
-    (if (and buffer-file-name
-	     (file-exists-p buffer-file-name)
-	     (not (buffer-modified-p)))
-        (progn
-          (python-vterm-paste-string (format fmt buffer-file-name))
-          (if arg
-              (python-vterm-send-return-key)
-            (python-vterm-send-return-key)
-            (python-vterm-send-return-key)))
-      (message "The buffer must be saved in a file to include."))))
+  (if (and buffer-file-name
+	   (file-exists-p buffer-file-name)
+	   (not (buffer-modified-p)))
+      (let* ((modname (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
+             (cmd (if arg
+                      (format "import %s\n" modname)
+                    (format "%%run \"%s\"\n" buffer-file-name))))
+        (python-vterm-paste-string cmd))
+    (message "The buffer must be saved in a file to include.")))
 
 (defun python-vterm-send-cd-to-buffer-directory ()
   "Change the REPL's working directory to the directory of the buffer file."
