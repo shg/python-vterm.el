@@ -185,7 +185,11 @@ Return a corresponding symbol or nil if not ready for input."
   (let* ((bs (buffer-string))
 	 (tail (substring bs (- (min 256 (length bs))))))
     (set-text-properties 0 (length tail) nil tail)
-    (let* ((lines (split-string (string-trim-right tail "[\t\n\r]+")
+    (let* ((lines (split-string (string-trim-right
+                                 (replace-regexp-in-string
+                                  (rx (1+ bol (0+ whitespace) eol))
+                                  "" tail)
+                                 "[\t\n\r]+")
 				(char-to-string ?\n)))
 	   (prompt (car (last lines))))
       (pcase prompt
