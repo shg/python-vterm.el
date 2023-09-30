@@ -2,3 +2,5 @@
 #+STARTUP: showall
 
 * python-vterm
+
+An inferior Python REPL implementation based on [[https://github.com/shg/julia-vterm.el][julia-vterm.el]]. This is very early experimental version and is not recommended for practical use.
