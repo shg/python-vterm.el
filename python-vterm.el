@@ -278,7 +278,7 @@ the main REPL, is used."
   (with-current-buffer (python-vterm-fellow-repl-buffer session-name)
     (cond ((string-match "\n\\'" string)
            (vterm-send-string (substring string 0 -1) t)
-           (python-vterm-send-return-key))
+           (vterm-send-return))
           (t (vterm-send-string string t)))))
 
 (defun python-vterm-send-current-line ()
