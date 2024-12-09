@@ -362,16 +362,6 @@ With prefix ARG, use %load instead."
     (,(kbd "C-c C-i") . python-vterm-send-include-buffer-file)
     (,(kbd "C-c C-d") . python-vterm-send-cd-to-buffer-directory)))
 
-
-;;----------------------------------------------------------------------
-;; Define some utility aliases but not override if the names are already used.
-(unless (fboundp 'python)
-  (defalias 'python 'python-vterm-repl))
-
-(unless (boundp 'python-session)
-  (defvaralias 'python-session 'python-vterm-session))
-
-
 (provide 'python-vterm)
 
 ;;; python-vterm.el ends here
